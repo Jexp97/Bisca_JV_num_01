@@ -1,4 +1,5 @@
 import classes_base as cb
+import time
 
 def jogador_da_vez(quem_comeca, vez, qtde_de_jogadores):
     # função para executar uma conta 'em ciclo'.
@@ -26,30 +27,25 @@ def main():
     mesa.prepara_a_mesa()
     quem_comeca = 0
     # um identificador para saber quem começa a rodada
+
     mesa.imprimir_pontos()
     while(not mesa.acabou_jogo()):
         vez = 0
         while vez < len(mesa.jogadores):
+            time.sleep(2)
             mesa.imprimir_mesa()
-            mesa.mostrar_carta_do_jogador(jogador_da_vez(quem_comeca,vez,len(mesa.jogadores)))
-            #print('\n {}: {}'.format(mesa.jogadores[jogador_da_vez(quem_comeca,vez,len(mesa.jogadores))],
-            # mesa.jogadores[jogador_da_vez(quem_comeca,vez,len(mesa.jogadores))].__str__()))
-            try:
-                print('Qual carta jogar? (1), (2) ou (3): ', end='')
-                carta_escolhida = input()
-                if (carta_escolhida != '1' and carta_escolhida != '2' and carta_escolhida != '3'):
-                    raise
-                mesa.atualiza_cartas_jogadas\
-                    (mesa.jogadores[jogador_da_vez(quem_comeca,vez,len(mesa.jogadores))],
+            carta_escolhida = mesa.jogadores[jogador_da_vez(quem_comeca,vez,len(mesa.jogadores))].\
+                escolhe_carta_para_jogar(mesa.carta_da_mesa, mesa.cartas_jogadas)
+
+            mesa.atualiza_cartas_jogadas\
+                (mesa.jogadores[jogador_da_vez(quem_comeca,vez,len(mesa.jogadores))],
                 mesa.jogadores[jogador_da_vez(quem_comeca,vez,len(mesa.jogadores))].\
                     retirar_carta_da_mao(carta_escolhida),vez)
-            except:
-                print('Entrada inválida!')
-                print('Você deve escolher entre 1, 2 e 3.')
-                vez -= 1 # isso porque vez é um inteiro entre 0 e 3
+
         
             vez += 1
 
+        time.sleep(2)
         mesa.imprimir_mesa()
         quem_comeca = mesa.jogadores.index(mesa.encerra_rodada())
         #atualiza o id do jogador que vai começar a próxima rodada com base em quem levou a mesa
@@ -70,7 +66,6 @@ def main():
             print('Parabéns {}!'.format(p.nome))
     else:
         print('\nEmpatou!!')
-
 
 
 if (__name__ == "__main__"):
